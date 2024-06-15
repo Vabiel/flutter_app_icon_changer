@@ -8,4 +8,8 @@ class FlutterCustomIconChanger {
   Future<bool?> changeIcon(String? iconName) {
     return FlutterCustomIconChangerPlatform.instance.changeIcon(iconName);
   }
+
+  Future<String?> getCurrentIcon() {
+    return FlutterCustomIconChangerPlatform.instance.getCurrentIcon();
+  }
 }

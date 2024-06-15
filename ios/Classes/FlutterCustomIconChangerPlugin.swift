@@ -16,6 +16,9 @@ public class FlutterCustomIconChangerPlugin: NSObject, FlutterPlugin {
         let iconName = call.arguments as? String
         self.changeIcon(to: iconName)
         result(true)
+    case "getCurrentIcon":
+        let currentIcon = self.getCurrentIcon()
+        result(currentIcon)
     default:
       result(FlutterMethodNotImplemented)
     }
@@ -33,6 +36,14 @@ public class FlutterCustomIconChangerPlugin: NSObject, FlutterPlugin {
           } else {
               print("The icon has been successfully changed.")
           }
+      }
+  }
+
+  private func getCurrentIcon() -> String? {
+      if let alternateIconName = UIApplication.shared.alternateIconName {
+          return alternateIconName
+      } else {
+          return nil
       }
   }
 }

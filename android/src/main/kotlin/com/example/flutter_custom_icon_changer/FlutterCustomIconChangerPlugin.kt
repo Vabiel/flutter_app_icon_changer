@@ -33,6 +33,10 @@ class FlutterCustomIconChangerPlugin: FlutterPlugin, MethodCallHandler {
         changeIcon(iconName)
         result.success(true)
       }
+      "getCurrentIcon" -> {
+        val currentIcon = getCurrentIcon()
+        result.success(currentIcon)
+      }
       else -> result.notImplemented()
     }
   }
@@ -41,11 +45,11 @@ class FlutterCustomIconChangerPlugin: FlutterPlugin, MethodCallHandler {
     channel.setMethodCallHandler(null)
   }
 
+  // TODO: Need refactoring and optimization!!!
   private fun changeIcon(iconName: String?) {
     val pm = binding.applicationContext.packageManager
     val packageName = binding.applicationContext.packageName
 
-    // Имя главной активности
     val mainActivity = "$packageName.MainActivity"
     val alias1 = "$packageName.MainActivityAlias1"
     val alias2 = "$packageName.MainActivityAlias2"
@@ -85,5 +89,25 @@ class FlutterCustomIconChangerPlugin: FlutterPlugin, MethodCallHandler {
         PackageManager.DONT_KILL_APP
       )
     }
+  }
+
+  // TODO: Need refactoring and optimization!!!
+  private fun getCurrentIcon(): String? {
+    val pm = binding.applicationContext.packageManager
+    val packageName = binding.applicationContext.packageName
+
+    val mainActivity = "$packageName.MainActivity"
+    val alias1 = "$packageName.MainActivityAlias1"
+    val alias2 = "$packageName.MainActivityAlias2"
+
+    if (pm.getComponentEnabledSetting(ComponentName(packageName, alias1)) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
+      return "icon1"
+    } else if (pm.getComponentEnabledSetting(ComponentName(packageName, alias2)) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
+      return "icon2"
+    } else if (pm.getComponentEnabledSetting(ComponentName(packageName, mainActivity)) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
+      return null
+    }
+
+    return null
   }
 }

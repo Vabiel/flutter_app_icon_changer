@@ -14,6 +14,11 @@ class MockFlutterCustomIconChangerPlatform
   Future<bool?> changeIcon(String? iconName) {
     return Future.value(true);
   }
+
+  @override
+  Future<String?> getCurrentIcon() {
+    return Future.value(null);
+  }
 }
 
 void main() {

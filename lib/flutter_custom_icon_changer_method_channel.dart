@@ -23,9 +23,19 @@ class MethodChannelFlutterCustomIconChanger
   Future<bool?> changeIcon(String? iconName) async {
     final icon = Platform.isIOS ? iconName : {'iconName': iconName};
     try {
-      return methodChannel.invokeMethod('changeIcon', icon);
+      return methodChannel.invokeMethod<bool>('changeIcon', icon);
     } on PlatformException catch (e) {
       debugPrint("Failed to change icon: '${e.message}'.");
+    }
+    return null;
+  }
+
+  @override
+  Future<String?> getCurrentIcon() async {
+    try {
+      return methodChannel.invokeMethod<String>('getCurrentIcon');
+    } on PlatformException catch (e) {
+      debugPrint("Failed to get current icon: '${e.message}'.");
     }
     return null;
   }
