@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
@@ -19,8 +21,9 @@ class MethodChannelFlutterCustomIconChanger
 
   @override
   Future<bool?> changeIcon(String? iconName) async {
+    final icon = Platform.isIOS ? iconName : {'iconName': iconName};
     try {
-      return methodChannel.invokeMethod('changeIcon', {'iconName': iconName});
+      return methodChannel.invokeMethod('changeIcon', icon);
     } on PlatformException catch (e) {
       debugPrint("Failed to change icon: '${e.message}'.");
     }

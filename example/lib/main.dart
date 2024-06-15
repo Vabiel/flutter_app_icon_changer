@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -30,15 +32,17 @@ class _MyAppState extends State<MyApp> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               ElevatedButton(
-                onPressed: () => _changeIcon('icon1'),
+                onPressed: () => _changeIcon(CustomIcons.first.iconName),
                 child: const Text('Change to Icon 1'),
               ),
+              const SizedBox(height: 8),
               ElevatedButton(
-                onPressed: () => _changeIcon('icon2'),
+                onPressed: () => _changeIcon(CustomIcons.second.iconName),
                 child: const Text('Change to Icon 2'),
               ),
+              const SizedBox(height: 8),
               ElevatedButton(
-                onPressed: () => _changeIcon(null),
+                onPressed: () => _changeIcon(CustomIcons.byDefault.iconName),
                 child: const Text('Change to Default Icon'),
               ),
             ],
@@ -55,4 +59,17 @@ class _MyAppState extends State<MyApp> {
       debugPrint("Failed to change icon: '${e.message}'.");
     }
   }
+}
+
+enum CustomIcons {
+  first('AppIcon1', 'icon1'),
+  second('AppIcon2', 'icon2'),
+  byDefault(null, null);
+
+  final String? _iosIconName;
+  final String? _androidIconName;
+
+  const CustomIcons(this._iosIconName, this._androidIconName);
+
+  String? get iconName => Platform.isIOS ? _iosIconName : _androidIconName;
 }

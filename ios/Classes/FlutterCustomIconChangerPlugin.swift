@@ -12,8 +12,27 @@ public class FlutterCustomIconChangerPlugin: NSObject, FlutterPlugin {
     switch call.method {
     case "getPlatformVersion":
       result("iOS " + UIDevice.current.systemVersion)
+    case "changeIcon":
+        let iconName = call.arguments as? String
+        self.changeIcon(to: iconName)
+        result(true)
     default:
       result(FlutterMethodNotImplemented)
     }
+  }
+
+  private func changeIcon(to iconName: String?) {
+      guard UIApplication.shared.supportsAlternateIcons else {
+          print("Changing the icon is not supported on this device.")
+          return
+      }
+
+      UIApplication.shared.setAlternateIconName(iconName) { error in
+          if let error = error {
+              print("Error when changing icon: \(error.localizedDescription)")
+          } else {
+              print("The icon has been successfully changed.")
+          }
+      }
   }
 }
