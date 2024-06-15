@@ -8,7 +8,8 @@ abstract class FlutterCustomIconChangerPlatform extends PlatformInterface {
 
   static final Object _token = Object();
 
-  static FlutterCustomIconChangerPlatform _instance = MethodChannelFlutterCustomIconChanger();
+  static FlutterCustomIconChangerPlatform _instance =
+      MethodChannelFlutterCustomIconChanger();
 
   /// The default instance of [FlutterCustomIconChangerPlatform] to use.
   ///
@@ -25,5 +26,9 @@ abstract class FlutterCustomIconChangerPlatform extends PlatformInterface {
 
   Future<String?> getPlatformVersion() {
     throw UnimplementedError('platformVersion() has not been implemented.');
+  }
+
+  Future<bool?> changeIcon(String? iconName) {
+    throw UnimplementedError('changeIcon() has not been implemented.');
   }
 }

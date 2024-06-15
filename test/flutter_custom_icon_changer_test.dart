@@ -7,21 +7,29 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 class MockFlutterCustomIconChangerPlatform
     with MockPlatformInterfaceMixin
     implements FlutterCustomIconChangerPlatform {
-
   @override
   Future<String?> getPlatformVersion() => Future.value('42');
+
+  @override
+  Future<bool?> changeIcon(String? iconName) {
+    return Future.value(true);
+  }
 }
 
 void main() {
-  final FlutterCustomIconChangerPlatform initialPlatform = FlutterCustomIconChangerPlatform.instance;
+  final FlutterCustomIconChangerPlatform initialPlatform =
+      FlutterCustomIconChangerPlatform.instance;
 
   test('$MethodChannelFlutterCustomIconChanger is the default instance', () {
-    expect(initialPlatform, isInstanceOf<MethodChannelFlutterCustomIconChanger>());
+    expect(
+        initialPlatform, isInstanceOf<MethodChannelFlutterCustomIconChanger>());
   });
 
   test('getPlatformVersion', () async {
-    FlutterCustomIconChanger flutterCustomIconChangerPlugin = FlutterCustomIconChanger();
-    MockFlutterCustomIconChangerPlatform fakePlatform = MockFlutterCustomIconChangerPlatform();
+    FlutterCustomIconChanger flutterCustomIconChangerPlugin =
+        FlutterCustomIconChanger();
+    MockFlutterCustomIconChangerPlatform fakePlatform =
+        MockFlutterCustomIconChangerPlatform();
     FlutterCustomIconChangerPlatform.instance = fakePlatform;
 
     expect(await flutterCustomIconChangerPlugin.getPlatformVersion(), '42');
