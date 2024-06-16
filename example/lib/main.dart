@@ -18,7 +18,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final _flutterCustomIconChangerPlugin = FlutterCustomIconChanger();
+  final _flutterCustomIconChangerPlugin = FlutterCustomIconChanger(
+    icons: [
+      for (final icon in CustomIcons.values)
+        if (icon.iconName != null) icon.iconName!
+    ],
+  );
 
   var _currentIcon = CustomIcons.byDefault;
   var _isSupported = false;
@@ -93,18 +98,20 @@ class _MyAppState extends State<MyApp> {
 }
 
 enum CustomIcons {
-  first('AppIcon1', 'icon1'),
-  second('AppIcon2', 'icon2'),
-  byDefault(null, null);
+  first('AppIcon1', 'MainActivityAlias1'),
+  second('AppIcon2', 'MainActivityAlias2'),
+  byDefault(null, 'MainActivity');
 
   final String? _iosIconName;
-  final String? _androidIconName;
+  final String _androidIconName;
 
   const CustomIcons(this._iosIconName, this._androidIconName);
 
   String? get iconName => Platform.isIOS ? _iosIconName : _androidIconName;
 
   factory CustomIcons.fromString(String? icon) {
+    if (icon == null) return CustomIcons.byDefault;
+
     return CustomIcons.values.firstWhere(
       (e) => e._iosIconName == icon || e._androidIconName == icon,
       orElse: () => CustomIcons.byDefault,

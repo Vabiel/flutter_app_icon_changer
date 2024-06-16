@@ -56,70 +56,56 @@ class FlutterCustomIconChangerPlugin: FlutterPlugin, MethodCallHandler {
     channel.setMethodCallHandler(null)
   }
 
-  // TODO: Need refactoring and optimization!!!
+  private fun disableComponent(packageManager: PackageManager, packageName: String, icon: String) {
+    val activityName = "$packageName.$icon"
+    packageManager.setComponentEnabledSetting(
+      ComponentName(packageName, activityName),
+      PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+      PackageManager.DONT_KILL_APP
+    )
+  }
+
+  private fun enableComponent(packageManager: PackageManager, packageName: String, icon: String) {
+    val activityName = "$packageName.$icon"
+    packageManager.setComponentEnabledSetting(
+      ComponentName(packageName, activityName),
+      PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+      PackageManager.DONT_KILL_APP
+    )
+  }
+
   private fun changeIcon(iconName: String?) {
+    val defaultIconName = "MainActivity"
     val pm = binding.applicationContext.packageManager
     val packageName = binding.applicationContext.packageName
 
-    val mainActivity = "$packageName.MainActivity"
-    val alias1 = "$packageName.MainActivityAlias1"
-    val alias2 = "$packageName.MainActivityAlias2"
+    val icon = iconName ?: defaultIconName
 
-    pm.setComponentEnabledSetting(
-      ComponentName(packageName, mainActivity),
-      PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-      PackageManager.DONT_KILL_APP
-    )
-
-    pm.setComponentEnabledSetting(
-      ComponentName(packageName, alias1),
-      PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-      PackageManager.DONT_KILL_APP
-    )
-
-    pm.setComponentEnabledSetting(
-      ComponentName(packageName, alias2),
-      PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-      PackageManager.DONT_KILL_APP
-    )
-
-    when (iconName) {
-      "icon1" -> pm.setComponentEnabledSetting(
-        ComponentName(packageName, alias1),
-        PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-        PackageManager.DONT_KILL_APP
-      )
-      "icon2" -> pm.setComponentEnabledSetting(
-        ComponentName(packageName, alias2),
-        PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-        PackageManager.DONT_KILL_APP
-      )
-      else -> pm.setComponentEnabledSetting(
-        ComponentName(packageName, mainActivity),
-        PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-        PackageManager.DONT_KILL_APP
-      )
+    availableIcons.filter {
+      it != icon
+    }.forEach {
+      disableComponent(pm, packageName, it)
     }
+
+    enableComponent(pm, packageName, icon)
   }
 
-  // TODO: Need refactoring and optimization!!!
   private fun getCurrentIcon(): String? {
     val pm = binding.applicationContext.packageManager
     val packageName = binding.applicationContext.packageName
 
-    val mainActivity = "$packageName.MainActivity"
-    val alias1 = "$packageName.MainActivityAlias1"
-    val alias2 = "$packageName.MainActivityAlias2"
-
-    if (pm.getComponentEnabledSetting(ComponentName(packageName, alias1)) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
-      return "icon1"
-    } else if (pm.getComponentEnabledSetting(ComponentName(packageName, alias2)) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
-      return "icon2"
-    } else if (pm.getComponentEnabledSetting(ComponentName(packageName, mainActivity)) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
-      return null
+    for (icon in availableIcons) {
+      if (isSelectedIcon(pm, packageName, icon)) {
+        return icon
+      }
     }
 
     return null
+  }
+
+  private fun isSelectedIcon(packageManager: PackageManager, packageName: String, icon: String): Boolean {
+    val activityName = "$packageName.$icon"
+    return  packageManager.getComponentEnabledSetting(ComponentName(packageName, activityName)) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED
   }
 
   private fun isSupported(): Boolean {

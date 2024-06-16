@@ -34,7 +34,7 @@ void main() {
 
   test('getPlatformVersion', () async {
     FlutterCustomIconChanger flutterCustomIconChangerPlugin =
-        FlutterCustomIconChanger();
+        FlutterCustomIconChanger(icons: ['1','2', '3']);
     MockFlutterCustomIconChangerPlatform fakePlatform =
         MockFlutterCustomIconChangerPlatform();
     FlutterCustomIconChangerPlatform.instance = fakePlatform;

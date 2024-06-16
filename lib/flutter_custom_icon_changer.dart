@@ -1,6 +1,13 @@
 import 'flutter_custom_icon_changer_platform_interface.dart';
 
 class FlutterCustomIconChanger {
+  final List<String> icons;
+
+  FlutterCustomIconChanger({required this.icons}) {
+    assert(icons.isNotEmpty);
+    _setAvailableIcons(icons);
+  }
+
   Future<String?> getPlatformVersion() {
     return FlutterCustomIconChangerPlatform.instance.getPlatformVersion();
   }
@@ -17,7 +24,7 @@ class FlutterCustomIconChanger {
     return FlutterCustomIconChangerPlatform.instance.isSupported();
   }
 
-  Future<void> setAvailableIcons(List<String> icons) {
+  Future<void> _setAvailableIcons(List<String> icons) {
     return FlutterCustomIconChangerPlatform.instance.setAvailableIcons(icons);
   }
 }
