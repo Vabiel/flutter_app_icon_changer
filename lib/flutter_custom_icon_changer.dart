@@ -12,4 +12,8 @@ class FlutterCustomIconChanger {
   Future<String?> getCurrentIcon() {
     return FlutterCustomIconChangerPlatform.instance.getCurrentIcon();
   }
+
+  Future<bool> isSupported() {
+    return FlutterCustomIconChangerPlatform.instance.isSupported();
+  }
 }

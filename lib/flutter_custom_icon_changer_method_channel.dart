@@ -39,4 +39,15 @@ class MethodChannelFlutterCustomIconChanger
     }
     return null;
   }
+
+  @override
+  Future<bool> isSupported() async {
+    try {
+      final isSupported = await methodChannel.invokeMethod<bool>('isSupported');
+      return isSupported ?? false;
+    } on PlatformException catch (e) {
+      debugPrint("Failed to check if icon change is supported: '${e.message}'.");
+      return false;
+    }
+  }
 }

@@ -35,4 +35,8 @@ abstract class FlutterCustomIconChangerPlatform extends PlatformInterface {
   Future<String?> getCurrentIcon() {
     throw UnimplementedError('getCurrentIcon() has not been implemented.');
   }
+
+  Future<bool> isSupported() async {
+    throw UnimplementedError('isSupported() has not been implemented.');
+  }
 }

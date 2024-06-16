@@ -1,6 +1,7 @@
 package com.example.flutter_custom_icon_changer
 
 import androidx.annotation.NonNull
+import android.os.Build
 import android.content.ComponentName
 import android.content.pm.PackageManager
 
@@ -36,6 +37,10 @@ class FlutterCustomIconChangerPlugin: FlutterPlugin, MethodCallHandler {
       "getCurrentIcon" -> {
         val currentIcon = getCurrentIcon()
         result.success(currentIcon)
+      }
+      "isSupported" -> {
+        val isSupported = isSupported()
+        result.success(isSupported)
       }
       else -> result.notImplemented()
     }
@@ -109,5 +114,9 @@ class FlutterCustomIconChangerPlugin: FlutterPlugin, MethodCallHandler {
     }
 
     return null
+  }
+
+  private fun isSupported(): Boolean {
+    return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
   }
 }

@@ -11,14 +11,13 @@ class MockFlutterCustomIconChangerPlatform
   Future<String?> getPlatformVersion() => Future.value('42');
 
   @override
-  Future<bool?> changeIcon(String? iconName) {
-    return Future.value(true);
-  }
+  Future<bool?> changeIcon(String? iconName) => Future.value(true);
 
   @override
-  Future<String?> getCurrentIcon() {
-    return Future.value(null);
-  }
+  Future<String?> getCurrentIcon() => Future.value(null);
+
+  @override
+  Future<bool> isSupported() => Future.value(true);
 }
 
 void main() {

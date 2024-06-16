@@ -19,6 +19,9 @@ public class FlutterCustomIconChangerPlugin: NSObject, FlutterPlugin {
     case "getCurrentIcon":
         let currentIcon = self.getCurrentIcon()
         result(currentIcon)
+    case "isSupported":
+        let isSupported = self.isSupported()
+        result(isSupported)
     default:
       result(FlutterMethodNotImplemented)
     }
@@ -45,5 +48,9 @@ public class FlutterCustomIconChangerPlugin: NSObject, FlutterPlugin {
       } else {
           return nil
       }
+  }
+
+  private func isSupported() -> Bool {
+    return UIApplication.shared.supportsAlternateIcons
   }
 }

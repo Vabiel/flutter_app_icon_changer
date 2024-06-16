@@ -21,6 +21,7 @@ class _MyAppState extends State<MyApp> {
   final _flutterCustomIconChangerPlugin = FlutterCustomIconChanger();
 
   var _currentIcon = CustomIcons.byDefault;
+  var _isSupported = false;
 
   @override
   void initState() {
@@ -29,13 +30,17 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> initPlatformState() async {
-    final currentIcon = await _flutterCustomIconChangerPlugin.getCurrentIcon();
+    _isSupported = await _flutterCustomIconChangerPlugin.isSupported();
+    if (_isSupported) {
+      final currentIcon =
+          await _flutterCustomIconChangerPlugin.getCurrentIcon();
 
-    if (!mounted) return;
+      if (!mounted) return;
 
-    setState(() {
-      _currentIcon = CustomIcons.fromString(currentIcon);
-    });
+      setState(() {
+        _currentIcon = CustomIcons.fromString(currentIcon);
+      });
+    }
   }
 
   @override
@@ -49,27 +54,28 @@ class _MyAppState extends State<MyApp> {
           child: Column(
             children: <Widget>[
               const Spacer(),
-              Text('currentIcon: $_currentIcon'),
+              if (_isSupported)
+                Text('currentIcon: $_currentIcon')
+              else
+                const Text('Changing the icon is not supported on this device'),
               const SizedBox(height: 32),
-              ElevatedButton(
-                onPressed: () => _changeIcon(CustomIcons.first),
-                child: const Text('Change first Icon'),
-              ),
+              _buildButton('Change first Icon', CustomIcons.first),
               const SizedBox(height: 8),
-              ElevatedButton(
-                onPressed: () => _changeIcon(CustomIcons.second),
-                child: const Text('Change second Icon'),
-              ),
+              _buildButton('Change second Icon', CustomIcons.second),
               const SizedBox(height: 8),
-              ElevatedButton(
-                onPressed: () => _changeIcon(CustomIcons.byDefault),
-                child: const Text('Change default Icon'),
-              ),
+              _buildButton('Change default Icon', CustomIcons.byDefault),
               const Spacer(),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildButton(String title, CustomIcons icon) {
+    return ElevatedButton(
+      onPressed: _isSupported ? () => _changeIcon(icon) : null,
+      child: Text(title),
     );
   }
 
