@@ -18,6 +18,9 @@ class MockFlutterCustomIconChangerPlatform
 
   @override
   Future<bool> isSupported() => Future.value(true);
+
+  @override
+  Future<void> setAvailableIcons(List<String> icons) async {}
 }
 
 void main() {

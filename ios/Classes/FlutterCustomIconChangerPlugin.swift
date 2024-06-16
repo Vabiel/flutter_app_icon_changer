@@ -2,6 +2,8 @@ import Flutter
 import UIKit
 
 public class FlutterCustomIconChangerPlugin: NSObject, FlutterPlugin {
+  private var availableIcons: [String] = []
+
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "flutter_custom_icon_changer", binaryMessenger: registrar.messenger())
     let instance = FlutterCustomIconChangerPlugin()
@@ -13,15 +15,26 @@ public class FlutterCustomIconChangerPlugin: NSObject, FlutterPlugin {
     case "getPlatformVersion":
       result("iOS " + UIDevice.current.systemVersion)
     case "changeIcon":
-        let iconName = call.arguments as? String
-        self.changeIcon(to: iconName)
-        result(true)
+        if let args = call.arguments as? [String: Any] {
+            let iconName = args["iconName"] as? String
+            self.changeIcon(to: iconName)
+            result(true)
+        } else {
+            result(FlutterError.invalidArgs("Arguments is invalid"))
+        }
     case "getCurrentIcon":
         let currentIcon = self.getCurrentIcon()
         result(currentIcon)
     case "isSupported":
         let isSupported = self.isSupported()
         result(isSupported)
+    case "setAvailableIcons":
+        if let args = call.arguments as? [String: Any], let icons = args["icons"] as? [String] {
+            self.setAvailableIcons(icons)
+            result(nil)
+        } else {
+            result(FlutterError.invalidArgs("Arguments is invalid"))
+        }
     default:
       result(FlutterMethodNotImplemented)
     }
@@ -53,4 +66,14 @@ public class FlutterCustomIconChangerPlugin: NSObject, FlutterPlugin {
   private func isSupported() -> Bool {
     return UIApplication.shared.supportsAlternateIcons
   }
+
+  private func setAvailableIcons(_ icons: [String]) {
+    availableIcons = icons
+  }
+}
+
+extension FlutterError {
+    static func invalidArgs(_ message: String, details: Any? = nil) -> FlutterError {
+        return FlutterError(code: "INVALID_ARGS", message: message, details: details);
+    }
 }

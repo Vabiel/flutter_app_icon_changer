@@ -16,4 +16,8 @@ class FlutterCustomIconChanger {
   Future<bool> isSupported() {
     return FlutterCustomIconChangerPlatform.instance.isSupported();
   }
+
+  Future<void> setAvailableIcons(List<String> icons) {
+    return FlutterCustomIconChangerPlatform.instance.setAvailableIcons(icons);
+  }
 }

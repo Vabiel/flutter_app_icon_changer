@@ -28,7 +28,7 @@ abstract class FlutterCustomIconChangerPlatform extends PlatformInterface {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 
-  Future<bool?> changeIcon(String? iconName) {
+  Future<bool?> changeIcon(String? icon) {
     throw UnimplementedError('changeIcon() has not been implemented.');
   }
 
@@ -38,5 +38,9 @@ abstract class FlutterCustomIconChangerPlatform extends PlatformInterface {
 
   Future<bool> isSupported() async {
     throw UnimplementedError('isSupported() has not been implemented.');
+  }
+
+  Future<void> setAvailableIcons(List<String> icons) async {
+    throw UnimplementedError('setAvailableIcons() has not been implemented.');
   }
 }

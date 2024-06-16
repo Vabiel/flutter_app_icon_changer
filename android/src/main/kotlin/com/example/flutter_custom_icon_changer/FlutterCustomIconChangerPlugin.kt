@@ -19,6 +19,7 @@ class FlutterCustomIconChangerPlugin: FlutterPlugin, MethodCallHandler {
   /// when the Flutter Engine is detached from the Activity
   private lateinit var channel : MethodChannel
   private lateinit var binding: FlutterPlugin.FlutterPluginBinding
+  private var availableIcons: List<String> = listOf()
 
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "flutter_custom_icon_changer")
@@ -28,7 +29,7 @@ class FlutterCustomIconChangerPlugin: FlutterPlugin, MethodCallHandler {
 
   override fun onMethodCall(call: MethodCall, result: Result) {
     when (call.method) {
-      "getPlatformVersion" -> result.success("Android ${android.os.Build.VERSION.RELEASE}")
+      "getPlatformVersion" -> result.success("Android ${Build.VERSION.RELEASE}")
       "changeIcon" -> {
         val iconName = call.argument<String>("iconName")
         changeIcon(iconName)
@@ -41,6 +42,11 @@ class FlutterCustomIconChangerPlugin: FlutterPlugin, MethodCallHandler {
       "isSupported" -> {
         val isSupported = isSupported()
         result.success(isSupported)
+      }
+      "setAvailableIcons" -> {
+        val icons = call.argument<List<String>>("icons")
+        setAvailableIcons(icons)
+        result.success(null)
       }
       else -> result.notImplemented()
     }
@@ -118,5 +124,11 @@ class FlutterCustomIconChangerPlugin: FlutterPlugin, MethodCallHandler {
 
   private fun isSupported(): Boolean {
     return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+  }
+
+  private fun setAvailableIcons(icons: List<String>?) {
+    if (icons != null) {
+      availableIcons = icons
+    }
   }
 }

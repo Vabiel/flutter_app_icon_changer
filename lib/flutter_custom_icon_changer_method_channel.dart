@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
@@ -20,12 +18,11 @@ class MethodChannelFlutterCustomIconChanger
   }
 
   @override
-  Future<bool?> changeIcon(String? iconName) async {
-    final icon = Platform.isIOS ? iconName : {'iconName': iconName};
+  Future<bool?> changeIcon(String? icon) async {
     try {
-      return methodChannel.invokeMethod<bool>('changeIcon', icon);
+      return methodChannel.invokeMethod<bool>('changeIcon', {'iconName': icon});
     } on PlatformException catch (e) {
-      debugPrint("Failed to change icon: '${e.message}'.");
+      debugPrint("Failed to change icon: $icon\n'${e.message}'.");
     }
     return null;
   }
@@ -48,6 +45,15 @@ class MethodChannelFlutterCustomIconChanger
     } on PlatformException catch (e) {
       debugPrint("Failed to check if icon change is supported: '${e.message}'.");
       return false;
+    }
+  }
+
+  @override
+  Future<void> setAvailableIcons(List<String> icons) async {
+    try {
+      await methodChannel.invokeMethod('setAvailableIcons', {'icons': icons});
+    } on PlatformException catch (e) {
+      debugPrint("Failed to set available icons: $icons\n'${e.message}'.");
     }
   }
 }
