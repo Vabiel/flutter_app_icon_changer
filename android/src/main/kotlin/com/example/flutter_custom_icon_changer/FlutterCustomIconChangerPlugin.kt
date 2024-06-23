@@ -1,6 +1,5 @@
 package com.example.flutter_custom_icon_changer
 
-import androidx.annotation.NonNull
 import android.os.Build
 import android.content.ComponentName
 import android.content.pm.PackageManager
@@ -19,7 +18,7 @@ class FlutterCustomIconChangerPlugin: FlutterPlugin, MethodCallHandler {
   /// when the Flutter Engine is detached from the Activity
   private lateinit var channel : MethodChannel
   private lateinit var binding: FlutterPlugin.FlutterPluginBinding
-  private var availableIcons: List<String> = listOf()
+  private val availableIcons = mutableListOf<AppIcon>()
 
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "flutter_custom_icon_changer")
@@ -29,11 +28,9 @@ class FlutterCustomIconChangerPlugin: FlutterPlugin, MethodCallHandler {
 
   override fun onMethodCall(call: MethodCall, result: Result) {
     when (call.method) {
-      "getPlatformVersion" -> result.success("Android ${Build.VERSION.RELEASE}")
       "changeIcon" -> {
         val iconName = call.argument<String>("iconName")
-        changeIcon(iconName)
-        result.success(true)
+        changeIcon(iconName, result)
       }
       "getCurrentIcon" -> {
         val currentIcon = getCurrentIcon()
@@ -44,9 +41,13 @@ class FlutterCustomIconChangerPlugin: FlutterPlugin, MethodCallHandler {
         result.success(isSupported)
       }
       "setAvailableIcons" -> {
-        val icons = call.argument<List<String>>("icons")
-        setAvailableIcons(icons)
-        result.success(null)
+        val iconsList = call.argument<List<Map<String, Any>>>("icons")
+        if (iconsList != null) {
+          setAvailableIcons(iconsList)
+          result.success(null)
+        } else {
+          result.error("INVALID_ARGS", "Arguments are invalid", null)
+        }
       }
       else -> result.notImplemented()
     }
@@ -74,29 +75,45 @@ class FlutterCustomIconChangerPlugin: FlutterPlugin, MethodCallHandler {
     )
   }
 
-  private fun changeIcon(iconName: String?) {
-    val defaultIconName = "MainActivity"
+  private fun changeIcon(iconName: String?, result: MethodChannel.Result) {
+    val defaultIcon = availableIcons.firstOrNull { it.isDefaultIcon } ?: availableIcons.first()
+
+    val iconToChange = if (iconName == null) {
+      defaultIcon.icon
+    } else {
+      availableIcons.firstOrNull { it.icon == iconName }?.icon
+    }
+
+    if (iconToChange == null) {
+      setIcon(defaultIcon.icon, result)
+      result.error("ICON_NOT_FOUND", "Icon $iconName not found", null)
+    } else {
+      setIcon(iconToChange, result)
+    }
+
+  }
+
+  private fun setIcon(icon: String, result: MethodChannel.Result) {
     val pm = binding.applicationContext.packageManager
     val packageName = binding.applicationContext.packageName
 
-    val icon = iconName ?: defaultIconName
-
     availableIcons.filter {
-      it != icon
+      it.icon != icon
     }.forEach {
-      disableComponent(pm, packageName, it)
+      disableComponent(pm, packageName, it.icon)
     }
 
     enableComponent(pm, packageName, icon)
+    result.success(true)
   }
 
   private fun getCurrentIcon(): String? {
     val pm = binding.applicationContext.packageManager
     val packageName = binding.applicationContext.packageName
 
-    for (icon in availableIcons) {
-      if (isSelectedIcon(pm, packageName, icon)) {
-        return icon
+    for (appIcon in availableIcons) {
+      if (isSelectedIcon(pm, packageName, appIcon.icon)) {
+        return appIcon.icon
       }
     }
 
@@ -112,9 +129,23 @@ class FlutterCustomIconChangerPlugin: FlutterPlugin, MethodCallHandler {
     return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
   }
 
-  private fun setAvailableIcons(icons: List<String>?) {
-    if (icons != null) {
-      availableIcons = icons
+  private fun setAvailableIcons(iconsArray: List<Map<String, Any>>) {
+    availableIcons.clear()
+    for (iconMap in iconsArray) {
+      val appIcon = AppIcon.fromMap(iconMap)
+      if (appIcon != null) {
+        availableIcons.add(appIcon)
+      }
+    }
+  }
+}
+
+data class AppIcon(val icon: String, val isDefaultIcon: Boolean) {
+  companion object {
+    fun fromMap(map: Map<String, Any>): AppIcon? {
+      val icon = map["icon"] as? String ?: return null
+      val isDefaultIcon = map["isDefaultIcon"] as? Boolean ?: return null
+      return AppIcon(icon, isDefaultIcon)
     }
   }
 }

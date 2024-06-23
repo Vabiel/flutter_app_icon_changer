@@ -5,6 +5,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_custom_icon_changer/flutter_custom_icon_changer.dart';
+import 'package:flutter_custom_icon_changer/flutter_custom_icon_changer_platform_interface.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,10 +20,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final _flutterCustomIconChangerPlugin = FlutterCustomIconChanger(
-    icons: [
-      for (final icon in CustomIcons.values)
-        if (icon.iconName != null) icon.iconName!
-    ],
+    icons: CustomIconsSet(),
   );
 
   var _currentIcon = CustomIcons.byDefault;
@@ -85,9 +83,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _changeIcon(CustomIcons icon) async {
-    final iconName = icon.iconName;
+    final currentIcon = icon.currentIcon;
     try {
-      await _flutterCustomIconChangerPlugin.changeIcon(iconName);
+      await _flutterCustomIconChangerPlugin.changeIcon(currentIcon);
       setState(() {
         _currentIcon = icon;
       });
@@ -97,23 +95,44 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-enum CustomIcons {
+class CustomIconsSet extends AppIconsSet {
+  CustomIconsSet() : super(iconsSet: CustomIcons.values);
+}
+
+enum CustomIcons implements AppIcon {
   first('AppIcon1', 'MainActivityAlias1'),
   second('AppIcon2', 'MainActivityAlias2'),
-  byDefault(null, 'MainActivity');
+  byDefault('AppIcon', 'MainActivity', isDefaultIcon: true);
 
-  final String? _iosIconName;
-  final String _androidIconName;
+  @override
+  final String iOSIcon;
+  @override
+  final String androidIcon;
+  @override
+  final bool isDefaultIcon;
 
-  const CustomIcons(this._iosIconName, this._androidIconName);
+  const CustomIcons(
+    this.iOSIcon,
+    this.androidIcon, {
+    this.isDefaultIcon = false,
+  });
 
-  String? get iconName => Platform.isIOS ? _iosIconName : _androidIconName;
+  @override
+  Map<String, dynamic> get data {
+    return {
+      'icon': currentIcon,
+      'isDefaultIcon': isDefaultIcon,
+    };
+  }
+
+  @override
+  String get currentIcon => Platform.isIOS ? iOSIcon : androidIcon;
 
   factory CustomIcons.fromString(String? icon) {
     if (icon == null) return CustomIcons.byDefault;
 
     return CustomIcons.values.firstWhere(
-      (e) => e._iosIconName == icon || e._androidIconName == icon,
+      (e) => e.iOSIcon == icon || e.androidIcon == icon,
       orElse: () => CustomIcons.byDefault,
     );
   }

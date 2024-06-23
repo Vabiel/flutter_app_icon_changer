@@ -11,13 +11,6 @@ class MethodChannelFlutterCustomIconChanger
   final methodChannel = const MethodChannel('flutter_custom_icon_changer');
 
   @override
-  Future<String?> getPlatformVersion() async {
-    final version =
-        await methodChannel.invokeMethod<String>('getPlatformVersion');
-    return version;
-  }
-
-  @override
   Future<bool?> changeIcon(String? icon) async {
     try {
       return methodChannel.invokeMethod<bool>('changeIcon', {'iconName': icon});
@@ -49,11 +42,12 @@ class MethodChannelFlutterCustomIconChanger
   }
 
   @override
-  Future<void> setAvailableIcons(List<String> icons) async {
+  Future<void> setAvailableIcons(AppIconsSet iconsSet) async {
     try {
-      await methodChannel.invokeMethod('setAvailableIcons', {'icons': icons});
+      final dataSet = iconsSet.toDataSet();
+      await methodChannel.invokeMethod('setAvailableIcons', {'icons': dataSet});
     } on PlatformException catch (e) {
-      debugPrint("Failed to set available icons: $icons\n'${e.message}'.");
+      debugPrint("Failed to set available icons: $iconsSet\n'${e.message}'.");
     }
   }
 }
