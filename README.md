@@ -3,6 +3,8 @@
 ## Description
 This project demonstrates how to implement the functionality of changing icons in a Flutter application.
 
+![Preview](./readme_images/preview.png)
+
 ## Getting Started
 
 To get started with the examples, clone the repository and navigate to the project directory:
@@ -22,27 +24,41 @@ cd flutter_custom_icon_changer
     android:exported="true"
     android:launchMode="singleTop"
     android:theme="@style/LaunchTheme"
-    android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|screenLayout|density|uiMode"
     android:hardwareAccelerated="true"
     android:windowSoftInputMode="adjustResize">
-    <!-- Activity settings -->
+    <meta-data
+        android:name="io.flutter.embedding.android.NormalTheme"
+        android:resource="@style/NormalTheme"
+    />
+    <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+    </intent-filter>
 </activity>
 
 <activity-alias
-    android:name=".MainActivityAlias1"
-    android:enabled="false"
-    android:exported="true"
-    android:targetActivity=".MainActivity"
-    android:icon="@mipmap/ic_launcher_icon1"
-    android:label="@string/app_name" />
+android:enabled="false"
+android:exported="true"
+android:icon="@mipmap/ic_launcher1"
+android:name=".MainActivityAlias1"
+android:targetActivity=".MainActivity">
+<intent-filter>
+    <action android:name="android.intent.action.MAIN" />
+    <category android:name="android.intent.category.LAUNCHER" />
+</intent-filter>
+</activity-alias>
 
 <activity-alias
-    android:name=".MainActivityAlias2"
-    android:enabled="false"
-    android:exported="true"
-    android:targetActivity=".MainActivity"
-    android:icon="@mipmap/ic_launcher_icon2"
-    android:label="@string/app_name" />
+android:enabled="false"
+android:exported="true"
+android:icon="@mipmap/ic_launcher2"
+android:name=".MainActivityAlias2"
+android:targetActivity=".MainActivity">
+<intent-filter>
+    <action android:name="android.intent.action.MAIN" />
+    <category android:name="android.intent.category.LAUNCHER" />
+</intent-filter>
+</activity-alias>
 ```
 Where `.MainActivityAlias1` and `.MainActivityAlias2` are the names of the aliases that will be accessed
 

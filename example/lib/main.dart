@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> {
     _isSupported = await _flutterCustomIconChangerPlugin.isSupported();
     if (_isSupported) {
       final currentIcon =
-      await _flutterCustomIconChangerPlugin.getCurrentIcon();
+          await _flutterCustomIconChangerPlugin.getCurrentIcon();
 
       if (!mounted) return;
 
@@ -49,6 +49,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Icon changer example'),
@@ -57,23 +58,26 @@ class _MyAppState extends State<MyApp> {
           child: Column(
             children: <Widget>[
               const Spacer(),
-              if (!_isSupported)
-                ...[
-                  const Text(
-                      'Changing the icon is not supported on this device'),
-                  const SizedBox(height: 8),
-                ],
-              Opacity(
-                opacity: _isSupported ? 1 : .5,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _buildButton(CustomIcons.first),
-                    const SizedBox(width: 8),
-                    _buildButton(CustomIcons.second),
-                    const SizedBox(width: 8),
-                    _buildButton(CustomIcons.byDefault),
-                  ],
+              if (!_isSupported) ...[
+                const Text('Changing the icon is not supported on this device'),
+                const SizedBox(height: 8),
+              ],
+              FittedBox(
+                child: Opacity(
+                  opacity: _isSupported ? 1 : .5,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildButton(CustomIcons.first),
+                        const SizedBox(width: 8),
+                        _buildButton(CustomIcons.second),
+                        const SizedBox(width: 8),
+                        _buildButton(CustomIcons.byDefault),
+                      ],
+                    ),
+                  ),
                 ),
               ),
               const Spacer(),
@@ -106,9 +110,7 @@ class _MyAppState extends State<MyApp> {
     return RoundedRectangleBorder(
       borderRadius: borderRadius,
       side: BorderSide(
-        color: Theme
-            .of(context)
-            .primaryColor,
+        color: Theme.of(context).primaryColor,
         width: 2.0,
       ),
     );
@@ -164,11 +166,12 @@ enum CustomIcons implements AppIcon {
 
   final String previewPath;
 
-  const CustomIcons(this.iOSIcon,
-      this.androidIcon, {
-        required this.previewPath,
-        this.isDefaultIcon = false,
-      });
+  const CustomIcons(
+    this.iOSIcon,
+    this.androidIcon, {
+    required this.previewPath,
+    this.isDefaultIcon = false,
+  });
 
   @override
   Map<String, dynamic> get data {
@@ -185,7 +188,7 @@ enum CustomIcons implements AppIcon {
     if (icon == null) return CustomIcons.byDefault;
 
     return CustomIcons.values.firstWhere(
-          (e) => e.iOSIcon == icon || e.androidIcon == icon,
+      (e) => e.iOSIcon == icon || e.androidIcon == icon,
       orElse: () => CustomIcons.byDefault,
     );
   }
