@@ -28,7 +28,7 @@ void main() {
   final fakePlatform = MockFlutterCustomIconChangerPlatform();
   FlutterCustomIconChangerPlatform.instance = fakePlatform;
   final flutterCustomIconChangerPlugin =
-      FlutterCustomIconChanger(icons: AppIconsSetTest());
+      FlutterCustomIconChanger(iconsSet: AppIconsSetTest());
 
   test('$MethodChannelFlutterCustomIconChanger is the default instance', () {
     expect(
@@ -45,8 +45,7 @@ void main() {
   });
 
   test('setAvailableIcons', () async {
-    await flutterCustomIconChangerPlugin
-        .testSetAvailableIcons(AppIconsSetTest());
+    await flutterCustomIconChangerPlugin.testSetAvailableIcons();
 
     // Verify no exception is thrown and method completes
     expect(true, isTrue);

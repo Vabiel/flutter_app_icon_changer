@@ -3,10 +3,10 @@ import 'package:flutter/foundation.dart';
 import 'flutter_custom_icon_changer_platform_interface.dart';
 
 class FlutterCustomIconChanger {
-  final AppIconsSet icons;
+  final AppIconsSet iconsSet;
 
-  FlutterCustomIconChanger({required this.icons}) {
-    _setAvailableIcons(icons);
+  FlutterCustomIconChanger({required this.iconsSet}) {
+    _setAvailableIcons();
   }
 
   Future<bool?> changeIcon(String? iconName) {
@@ -21,12 +21,12 @@ class FlutterCustomIconChanger {
     return FlutterCustomIconChangerPlatform.instance.isSupported();
   }
 
-  Future<void> _setAvailableIcons(AppIconsSet iconsSet) {
+  Future<void> _setAvailableIcons() {
     return FlutterCustomIconChangerPlatform.instance.setAvailableIcons(iconsSet);
   }
 
   @visibleForTesting
-  Future<void> testSetAvailableIcons(AppIconsSet icons) {
-    return _setAvailableIcons(icons);
+  Future<void> testSetAvailableIcons() {
+    return _setAvailableIcons();
   }
 }

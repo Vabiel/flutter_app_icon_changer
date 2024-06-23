@@ -20,7 +20,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final _flutterCustomIconChangerPlugin = FlutterCustomIconChanger(
-    icons: CustomIconsSet(),
+    iconsSet: CustomIconsSet(),
   );
 
   var _currentIcon = CustomIcons.byDefault;
@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> {
     _isSupported = await _flutterCustomIconChangerPlugin.isSupported();
     if (_isSupported) {
       final currentIcon =
-          await _flutterCustomIconChangerPlugin.getCurrentIcon();
+      await _flutterCustomIconChangerPlugin.getCurrentIcon();
 
       if (!mounted) return;
 
@@ -57,16 +57,25 @@ class _MyAppState extends State<MyApp> {
           child: Column(
             children: <Widget>[
               const Spacer(),
-              if (_isSupported)
-                Text('currentIcon: $_currentIcon')
-              else
-                const Text('Changing the icon is not supported on this device'),
-              const SizedBox(height: 32),
-              _buildButton('Change first Icon', CustomIcons.first),
-              const SizedBox(height: 8),
-              _buildButton('Change second Icon', CustomIcons.second),
-              const SizedBox(height: 8),
-              _buildButton('Change default Icon', CustomIcons.byDefault),
+              if (!_isSupported)
+                ...[
+                  const Text(
+                      'Changing the icon is not supported on this device'),
+                  const SizedBox(height: 8),
+                ],
+              Opacity(
+                opacity: _isSupported ? 1 : .5,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildButton(CustomIcons.first),
+                    const SizedBox(width: 8),
+                    _buildButton(CustomIcons.second),
+                    const SizedBox(width: 8),
+                    _buildButton(CustomIcons.byDefault),
+                  ],
+                ),
+              ),
               const Spacer(),
             ],
           ),
@@ -75,10 +84,42 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  Widget _buildButton(String title, CustomIcons icon) {
-    return ElevatedButton(
-      onPressed: _isSupported ? () => _changeIcon(icon) : null,
-      child: Text(title),
+  Widget _buildButton(CustomIcons icon) {
+    final border = BorderRadius.circular(8.0);
+
+    return InkWell(
+      borderRadius: border,
+      onTap: _isSupported ? () => _changeIcon(icon) : null,
+      child: Card(
+        shape: icon == _currentIcon ? _buildBorder(border) : null,
+        child: Padding(
+          padding: const EdgeInsets.all(14.0),
+          child: _buildPreviewIcon(
+            icon,
+          ),
+        ),
+      ),
+    );
+  }
+
+  OutlinedBorder _buildBorder(BorderRadius borderRadius) {
+    return RoundedRectangleBorder(
+      borderRadius: borderRadius,
+      side: BorderSide(
+        color: Theme
+            .of(context)
+            .primaryColor,
+        width: 2.0,
+      ),
+    );
+  }
+
+  Widget _buildPreviewIcon(CustomIcons icon, {double size = 100}) {
+    return Image.asset(
+      icon.previewPath,
+      fit: BoxFit.contain,
+      width: size,
+      height: size,
     );
   }
 
@@ -100,9 +141,19 @@ class CustomIconsSet extends AppIconsSet {
 }
 
 enum CustomIcons implements AppIcon {
-  first('AppIcon1', 'MainActivityAlias1'),
-  second('AppIcon2', 'MainActivityAlias2'),
-  byDefault('AppIcon', 'MainActivity', isDefaultIcon: true);
+  first(
+    'AppIcon1',
+    'MainActivityAlias1',
+    previewPath: 'assets/icons/icon1.png',
+  ),
+  second('AppIcon2', 'MainActivityAlias2',
+      previewPath: 'assets/icons/icon2.png'),
+  byDefault(
+    'AppIcon',
+    'MainActivity',
+    previewPath: 'assets/icons/default_icon.png',
+    isDefaultIcon: true,
+  );
 
   @override
   final String iOSIcon;
@@ -111,11 +162,13 @@ enum CustomIcons implements AppIcon {
   @override
   final bool isDefaultIcon;
 
-  const CustomIcons(
-    this.iOSIcon,
-    this.androidIcon, {
-    this.isDefaultIcon = false,
-  });
+  final String previewPath;
+
+  const CustomIcons(this.iOSIcon,
+      this.androidIcon, {
+        required this.previewPath,
+        this.isDefaultIcon = false,
+      });
 
   @override
   Map<String, dynamic> get data {
@@ -132,7 +185,7 @@ enum CustomIcons implements AppIcon {
     if (icon == null) return CustomIcons.byDefault;
 
     return CustomIcons.values.firstWhere(
-      (e) => e.iOSIcon == icon || e.androidIcon == icon,
+          (e) => e.iOSIcon == icon || e.androidIcon == icon,
       orElse: () => CustomIcons.byDefault,
     );
   }
