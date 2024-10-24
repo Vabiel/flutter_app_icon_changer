@@ -11,43 +11,24 @@ class MethodChannelFlutterAppIconChanger extends FlutterAppIconChangerPlatform {
   final methodChannel = const MethodChannel('flutter_app_icon_changer');
 
   @override
-  Future<bool?> changeIcon(String? icon) async {
-    try {
-      return methodChannel.invokeMethod<bool>('changeIcon', {'iconName': icon});
-    } on PlatformException catch (e) {
-      debugPrint("Failed to change icon: $icon\n'${e.message}'.");
-    }
-    return null;
+  Future<bool?> changeIcon(String? icon) {
+    return methodChannel.invokeMethod<bool>('changeIcon', {'iconName': icon});
   }
 
   @override
-  Future<String?> getCurrentIcon() async {
-    try {
-      return methodChannel.invokeMethod<String>('getCurrentIcon');
-    } on PlatformException catch (e) {
-      debugPrint("Failed to get current icon: '${e.message}'.");
-    }
-    return null;
+  Future<String?> getCurrentIcon() {
+    return methodChannel.invokeMethod<String>('getCurrentIcon');
   }
 
   @override
   Future<bool> isSupported() async {
-    try {
-      final isSupported = await methodChannel.invokeMethod<bool>('isSupported');
-      return isSupported ?? false;
-    } on PlatformException catch (e) {
-      debugPrint("Failed to check if icon change is supported: '${e.message}'.");
-      return false;
-    }
+    final isSupported = await methodChannel.invokeMethod<bool>('isSupported');
+    return isSupported ?? false;
   }
 
   @override
   Future<void> setAvailableIcons(AppIconsSet iconsSet) async {
-    try {
-      final dataSet = iconsSet.toDataSet();
-      await methodChannel.invokeMethod('setAvailableIcons', {'icons': dataSet});
-    } on PlatformException catch (e) {
-      debugPrint("Failed to set available icons: $iconsSet\n'${e.message}'.");
-    }
+    final dataSet = iconsSet.toDataSet();
+    await methodChannel.invokeMethod('setAvailableIcons', {'icons': dataSet});
   }
 }

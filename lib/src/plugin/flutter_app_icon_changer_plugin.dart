@@ -3,10 +3,10 @@ import 'package:flutter/foundation.dart';
 import '../models/models.dart';
 import 'flutter_app_icon_changer_platform_interface.dart';
 
-class FlutterAppIconChanger {
+class FlutterAppIconChangerPlugin {
   final AppIconsSet iconsSet;
 
-  FlutterAppIconChanger({required this.iconsSet}) {
+  FlutterAppIconChangerPlugin({required this.iconsSet}) {
     _setAvailableIcons();
   }
 

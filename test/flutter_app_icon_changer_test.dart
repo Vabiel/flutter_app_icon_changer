@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_app_icon_changer/src/models/models.dart';
 import 'package:flutter_app_icon_changer/src/plugin/flutter_app_icon_changer_platform_interface.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_app_icon_changer/src/plugin/flutter_app_icon_changer.dart';
+import 'package:flutter_app_icon_changer/src/plugin/flutter_app_icon_changer_plugin.dart';
 import 'package:flutter_app_icon_changer/src/plugin/flutter_app_icon_changer_method_channel.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
@@ -29,7 +29,7 @@ void main() {
   final fakePlatform = MockFlutterAppIconChangerPlatform();
   FlutterAppIconChangerPlatform.instance = fakePlatform;
   final flutterAppIconChangerPlugin =
-      FlutterAppIconChanger(iconsSet: AppIconsSetTest());
+      FlutterAppIconChangerPlugin(iconsSet: AppIconsSetTest());
 
   test('$MethodChannelFlutterAppIconChanger is the default instance', () {
     expect(initialPlatform, isInstanceOf<MethodChannelFlutterAppIconChanger>());
