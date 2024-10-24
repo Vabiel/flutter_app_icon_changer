@@ -1,4 +1,4 @@
-name: flutter_custom_icon_changer
+name: flutter_app_icon_changer
 description: "A new Flutter plugin project."
 version: 0.1.0
 homepage:
@@ -21,7 +21,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.example.flutter_custom_icon_changer
-        pluginClass: FlutterCustomIconChangerPlugin
+        package: com.example.flutter_app_icon_changer
+        pluginClass: FlutterAppIconChangerPlugin
       ios:
-        pluginClass: FlutterCustomIconChangerPlugin
+        pluginClass: FlutterAppIconChangerPlugin

@@ -2,12 +2,12 @@ import Flutter
 import Foundation
 import UIKit
 
-public class FlutterCustomIconChangerPlugin: NSObject, FlutterPlugin {
+public class FlutterAppIconChangerPlugin: NSObject, FlutterPlugin {
   private var availableIcons: [AppIcon] = []
 
   public static func register(with registrar: FlutterPluginRegistrar) {
-    let channel = FlutterMethodChannel(name: "flutter_custom_icon_changer", binaryMessenger: registrar.messenger())
-    let instance = FlutterCustomIconChangerPlugin()
+    let channel = FlutterMethodChannel(name: "flutter_app_icon_changer", binaryMessenger: registrar.messenger())
+    let instance = FlutterAppIconChangerPlugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
 

@@ -1,4 +1,4 @@
-# Flutter Custom Icons Examples
+# Flutter App Icons Examples
 
 ## Description
 This project demonstrates how to implement the functionality of changing icons in a Flutter application.
@@ -10,8 +10,8 @@ This project demonstrates how to implement the functionality of changing icons i
 To get started with the examples, clone the repository and navigate to the project directory:
 
 ```bash
-git clone https://github.com/Vabiel/flutter_custom_icon_changer.git
-cd flutter_custom_icon_changer
+git clone https://github.com/Vabiel/flutter_app_icon_changer.git
+cd flutter_app_icon_changer
 ```
 
 ## Setup Android
@@ -100,4 +100,4 @@ Where `.MainActivityAlias1` and `.MainActivityAlias2` are the names of the alias
 Where `.AppIcon`, `.Icon1` and `.Icon2` are the names of the assets that will be accessed.
 
 2. Add alternative icons to the project in the `ios/Runner/Assets.xcassets` folder with the names specified in `Info.plist`
-**Important:** added assets must be of `appiconset` type.
+   **Important:** added assets must be of `appiconset` type.

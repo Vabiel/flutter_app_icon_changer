@@ -1,5 +1,5 @@
-name: flutter_custom_icon_changer_example
-description: "Demonstrates how to use the flutter_custom_icon_changer plugin."
+name: flutter_app_icon_changer_example
+description: "Demonstrates how to use the flutter_app_icon_changer plugin."
 
 publish_to: 'none'
 
@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_custom_icon_changer:
+  flutter_app_icon_changer:
     path: ../
 
   cupertino_icons: ^1.0.6

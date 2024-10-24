@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:flutter_custom_icon_changer/flutter_custom_icon_changer.dart';
-import 'package:flutter_custom_icon_changer/flutter_custom_icon_changer_platform_interface.dart';
+import 'package:flutter_app_icon_changer/flutter_app_icon_changer.dart';
+import 'package:flutter_app_icon_changer/flutter_app_icon_changer_platform_interface.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +19,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final _flutterCustomIconChangerPlugin = FlutterCustomIconChanger(
+  final _flutterAppIconChangerPlugin = FlutterAppIconChanger(
     iconsSet: CustomIconsSet(),
   );
 
@@ -33,10 +33,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> initPlatformState() async {
-    _isSupported = await _flutterCustomIconChangerPlugin.isSupported();
+    _isSupported = await _flutterAppIconChangerPlugin.isSupported();
     if (_isSupported) {
-      final currentIcon =
-          await _flutterCustomIconChangerPlugin.getCurrentIcon();
+      final currentIcon = await _flutterAppIconChangerPlugin.getCurrentIcon();
 
       if (!mounted) return;
 
@@ -128,7 +127,7 @@ class _MyAppState extends State<MyApp> {
   Future<void> _changeIcon(CustomIcons icon) async {
     final currentIcon = icon.currentIcon;
     try {
-      await _flutterCustomIconChangerPlugin.changeIcon(currentIcon);
+      await _flutterAppIconChangerPlugin.changeIcon(currentIcon);
       setState(() {
         _currentIcon = icon;
       });

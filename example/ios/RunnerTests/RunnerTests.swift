@@ -2,12 +2,12 @@ import Flutter
 import UIKit
 import XCTest
 
-@testable import flutter_custom_icon_changer
+@testable import flutter_app_icon_changer
 
 class RunnerTests: XCTestCase {
 
     func testIsSupported() {
-        let plugin = FlutterCustomIconChangerPlugin()
+        let plugin = FlutterAppIconChangerPlugin()
 
         let call = FlutterMethodCall(methodName: "isSupported", arguments: nil)
 
@@ -20,7 +20,7 @@ class RunnerTests: XCTestCase {
     }
 
     func testGetCurrentIcon() {
-        let plugin = FlutterCustomIconChangerPlugin()
+        let plugin = FlutterAppIconChangerPlugin()
 
         // Assuming the default icon is set
         let call = FlutterMethodCall(methodName: "getCurrentIcon", arguments: nil)
@@ -38,7 +38,7 @@ class RunnerTests: XCTestCase {
     }
 
     func testSetAvailableIcons() {
-        let plugin = FlutterCustomIconChangerPlugin()
+        let plugin = FlutterAppIconChangerPlugin()
         let icons: [[String: Any]] = [
             ["icon": "icon1", "isDefaultIcon": true],
             ["icon": "icon2", "isDefaultIcon": false]
@@ -60,7 +60,7 @@ class RunnerTests: XCTestCase {
     }
 
     func testChangeIcon() {
-        let plugin = FlutterCustomIconChangerPlugin()
+        let plugin = FlutterAppIconChangerPlugin()
         let icons: [[String: Any]] = [
             ["icon": "icon1", "isDefaultIcon": true],
             ["icon": "icon2", "isDefaultIcon": false]

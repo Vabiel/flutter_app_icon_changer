@@ -1,4 +1,4 @@
-package com.example.flutter_custom_icon_changer
+package com.example.flutter_app_icon_changer
 
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -6,11 +6,11 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import org.mockito.Mockito.*
 
-internal class FlutterCustomIconChangerPluginTest {
+internal class FlutterAppIconChangerPluginTest {
 
   @Test
   fun onMethodCall_isSupported_returnsExpectedValue() {
-    val plugin = FlutterCustomIconChangerPlugin()
+    val plugin = FlutterAppIconChangerPlugin()
 
     val call = MethodCall("isSupported", null)
     val mockResult: MethodChannel.Result = mock(MethodChannel.Result::class.java)
@@ -21,7 +21,7 @@ internal class FlutterCustomIconChangerPluginTest {
 
   @Test
   fun onMethodCall_getCurrentIcon_returnsExpectedValue() {
-    val plugin = FlutterCustomIconChangerPlugin()
+    val plugin = FlutterAppIconChangerPlugin()
 
     val call = MethodCall("getCurrentIcon", null)
     val mockResult: MethodChannel.Result = mock(MethodChannel.Result::class.java)
@@ -34,7 +34,7 @@ internal class FlutterCustomIconChangerPluginTest {
 
   @Test
   fun onMethodCall_setAvailableIcons_setsIconsCorrectly() {
-    val plugin = FlutterCustomIconChangerPlugin()
+    val plugin = FlutterAppIconChangerPlugin()
 
     val icons: List<Map<String, Any>> = listOf(
       mapOf("icon" to "icon1", "isDefaultIcon" to true),
@@ -55,7 +55,7 @@ internal class FlutterCustomIconChangerPluginTest {
 
   @Test
   fun onMethodCall_changeIcon_changesIconCorrectly() {
-    val plugin = FlutterCustomIconChangerPlugin()
+    val plugin = FlutterAppIconChangerPlugin()
 
     val icons: List<Map<String, Any>> = listOf(
       mapOf("icon" to "icon1", "isDefaultIcon" to true),

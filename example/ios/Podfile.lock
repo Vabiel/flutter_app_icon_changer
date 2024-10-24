@@ -1,28 +1,28 @@
 PODS:
   - Flutter (1.0.0)
-  - flutter_custom_icon_changer (0.0.1):
+  - flutter_app_icon_changer (0.0.1):
     - Flutter
   - integration_test (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - flutter_custom_icon_changer (from `.symlinks/plugins/flutter_custom_icon_changer/ios`)
+  - flutter_app_icon_changer (from `.symlinks/plugins/flutter_app_icon_changer/ios`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  flutter_custom_icon_changer:
-    :path: ".symlinks/plugins/flutter_custom_icon_changer/ios"
+  flutter_app_icon_changer:
+    :path: ".symlinks/plugins/flutter_app_icon_changer/ios"
   integration_test:
     :path: ".symlinks/plugins/integration_test/ios"
 
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_custom_icon_changer: e6ceaece701aedf5c032362e8297b2a27edb8700
+  flutter_app_icon_changer: e633ce623d36db4dd63c01e4b63fc8a5d44ed48d
   integration_test: 13825b8a9334a850581300559b8839134b124670
 
 PODFILE CHECKSUM: 819463e6a0290f5a72f145ba7cde16e8b6ef0796
 
-COCOAPODS: 1.14.3
+COCOAPODS: 1.15.2

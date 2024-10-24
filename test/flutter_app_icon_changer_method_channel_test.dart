@@ -1,21 +1,21 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_custom_icon_changer/flutter_custom_icon_changer_method_channel.dart';
+import 'package:flutter_app_icon_changer/flutter_app_icon_changer_method_channel.dart';
 
-import 'flutter_custom_icon_changer_test.dart';
+import 'flutter_app_icon_changer_test.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  MethodChannelFlutterCustomIconChanger platform =
-      MethodChannelFlutterCustomIconChanger();
-  const MethodChannel channel = MethodChannel('flutter_custom_icon_changer');
+  MethodChannelFlutterAppIconChanger platform =
+  MethodChannelFlutterAppIconChanger();
+  const MethodChannel channel = MethodChannel('flutter_app_icon_changer');
 
   setUp(() {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(
       channel,
-      (MethodCall methodCall) async {
+          (MethodCall methodCall) async {
         switch (methodCall.method) {
           case 'isSupported':
             return true;
@@ -56,4 +56,3 @@ void main() {
     expect(await platform.changeIcon('newIcon'), true);
   });
 }
-

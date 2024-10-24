@@ -1,14 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
-import 'flutter_custom_icon_changer_platform_interface.dart';
+import 'flutter_app_icon_changer_platform_interface.dart';
 
-/// An implementation of [FlutterCustomIconChangerPlatform] that uses method channels.
-class MethodChannelFlutterCustomIconChanger
-    extends FlutterCustomIconChangerPlatform {
+/// An implementation of [FlutterAppIconChangerPlatform] that uses method channels.
+class MethodChannelFlutterAppIconChanger extends FlutterAppIconChangerPlatform {
   /// The method channel used to interact with the native platform.
   @visibleForTesting
-  final methodChannel = const MethodChannel('flutter_custom_icon_changer');
+  final methodChannel = const MethodChannel('flutter_app_icon_changer');
 
   @override
   Future<bool?> changeIcon(String? icon) async {
