@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_app_icon_changer/flutter_app_icon_changer_method_channel.dart';
+import 'package:flutter_app_icon_changer/src/plugin/flutter_app_icon_changer_method_channel.dart';
 
 import 'flutter_app_icon_changer_test.dart';
 

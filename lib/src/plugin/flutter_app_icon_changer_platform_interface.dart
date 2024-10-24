@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
+import '../models/models.dart';
 import 'flutter_app_icon_changer_method_channel.dart';
 
 abstract class FlutterAppIconChangerPlatform extends PlatformInterface {
@@ -40,49 +39,5 @@ abstract class FlutterAppIconChangerPlatform extends PlatformInterface {
 
   Future<void> setAvailableIcons(AppIconsSet iconsSet) async {
     throw UnimplementedError('setAvailableIcons() has not been implemented.');
-  }
-}
-
-abstract class AppIconsSet {
-  final List<AppIcon> iconsSet;
-
-  AppIconsSet({
-    required this.iconsSet,
-  }) : assert(iconsSet.isNotEmpty);
-
-  List<Map<String, dynamic>> toDataSet() {
-    return iconsSet.map((e) => e.data).toList();
-  }
-
-  @override
-  String toString() {
-    return 'AppIconsSet{iconsSet: $iconsSet}';
-  }
-}
-
-abstract class AppIcon {
-  final String iOSIcon;
-  final String androidIcon;
-  final bool isDefaultIcon;
-
-  AppIcon({
-    required this.iOSIcon,
-    required this.androidIcon,
-    required this.isDefaultIcon,
-  })  : assert(iOSIcon.isNotEmpty),
-        assert(androidIcon.isNotEmpty);
-
-  String get currentIcon => Platform.isIOS ? iOSIcon : androidIcon;
-
-  Map<String, dynamic> get data {
-    return {
-      'icon': currentIcon,
-      'isDefaultIcon': isDefaultIcon,
-    };
-  }
-
-  @override
-  String toString() {
-    return 'AppIcon{iOSIcon: $iOSIcon, androidIcon: $androidIcon, isDefaultIcon: $isDefaultIcon}';
   }
 }

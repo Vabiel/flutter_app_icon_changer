@@ -5,7 +5,6 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_app_icon_changer/flutter_app_icon_changer.dart';
-import 'package:flutter_app_icon_changer/flutter_app_icon_changer_platform_interface.dart';
 
 void main() {
   runApp(const MyApp());

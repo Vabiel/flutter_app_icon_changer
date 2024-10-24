@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app_icon_changer/src/models/models.dart';
+import 'package:flutter_app_icon_changer/src/plugin/flutter_app_icon_changer_platform_interface.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_app_icon_changer/flutter_app_icon_changer.dart';
-import 'package:flutter_app_icon_changer/flutter_app_icon_changer_platform_interface.dart';
-import 'package:flutter_app_icon_changer/flutter_app_icon_changer_method_channel.dart';
+import 'package:flutter_app_icon_changer/src/plugin/flutter_app_icon_changer.dart';
+import 'package:flutter_app_icon_changer/src/plugin/flutter_app_icon_changer_method_channel.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 class MockFlutterAppIconChangerPlatform
@@ -28,11 +29,10 @@ void main() {
   final fakePlatform = MockFlutterAppIconChangerPlatform();
   FlutterAppIconChangerPlatform.instance = fakePlatform;
   final flutterAppIconChangerPlugin =
-  FlutterAppIconChanger(iconsSet: AppIconsSetTest());
+      FlutterAppIconChanger(iconsSet: AppIconsSetTest());
 
   test('$MethodChannelFlutterAppIconChanger is the default instance', () {
-    expect(
-        initialPlatform, isInstanceOf<MethodChannelFlutterAppIconChanger>());
+    expect(initialPlatform, isInstanceOf<MethodChannelFlutterAppIconChanger>());
   });
 
   test('isSupported', () async {
@@ -40,8 +40,7 @@ void main() {
   });
 
   test('getCurrentIcon', () async {
-    expect(
-        await flutterAppIconChangerPlugin.getCurrentIcon(), 'defaultIcon');
+    expect(await flutterAppIconChangerPlugin.getCurrentIcon(), 'defaultIcon');
   });
 
   test('setAvailableIcons', () async {
@@ -65,8 +64,8 @@ class AppIconsSetTest extends AppIconsSet {
 class AppIconTest extends AppIcon {
   AppIconTest()
       : super(
-    iOSIcon: 'ios',
-    androidIcon: 'android',
-    isDefaultIcon: true,
-  );
+          iOSIcon: 'ios',
+          androidIcon: 'android',
+          isDefaultIcon: true,
+        );
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
+import '../models/models.dart';
 import 'flutter_app_icon_changer_platform_interface.dart';
 
 /// An implementation of [FlutterAppIconChangerPlatform] that uses method channels.
