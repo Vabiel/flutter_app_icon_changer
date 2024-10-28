@@ -1,10 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_app_icon_changer/flutter_app_icon_changer.dart';
+import 'package:flutter_app_icon_changer_example/src/models/models.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,7 +21,7 @@ class _MyAppState extends State<MyApp> {
     iconsSet: CustomIconsSet(),
   );
 
-  var _currentIcon = CustomIcons.byDefault;
+  CustomIcon _currentIcon = CustomIcons.defaultIcon;
   var _isSupported = false;
 
   @override
@@ -39,7 +38,7 @@ class _MyAppState extends State<MyApp> {
       if (!mounted) return;
 
       setState(() {
-        _currentIcon = CustomIcons.fromString(currentIcon);
+        _currentIcon = CustomIcon.fromString(currentIcon);
       });
     }
   }
@@ -52,41 +51,40 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Icon changer example'),
         ),
-        body: Center(
-          child: Column(
-            children: <Widget>[
-              const Spacer(),
-              if (!_isSupported) ...[
-                const Text('Changing the icon is not supported on this device'),
-                const SizedBox(height: 8),
-              ],
-              FittedBox(
-                child: Opacity(
-                  opacity: _isSupported ? 1 : .5,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _buildButton(CustomIcons.first),
-                        const SizedBox(width: 8),
-                        _buildButton(CustomIcons.second),
-                        const SizedBox(width: 8),
-                        _buildButton(CustomIcons.byDefault),
-                      ],
-                    ),
+        body: Column(
+          children: <Widget>[
+            const Spacer(),
+            if (!_isSupported) ...[
+              const Text('Changing the icon is not supported on this device'),
+              const SizedBox(height: 8),
+            ],
+            FittedBox(
+              child: Opacity(
+                opacity: _isSupported ? 1 : .5,
+                child: Padding(
+                  padding:
+                      const EdgeInsetsDirectional.symmetric(horizontal: 24),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _buildIcon(CustomIcons.redIcon),
+                      const SizedBox(width: 8),
+                      _buildIcon(CustomIcons.purpleIcon),
+                      const SizedBox(width: 8),
+                      _buildIcon(CustomIcons.defaultIcon),
+                    ],
                   ),
                 ),
               ),
-              const Spacer(),
-            ],
-          ),
+            ),
+            const Spacer(),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildButton(CustomIcons icon) {
+  Widget _buildIcon(CustomIcon icon) {
     final border = BorderRadius.circular(8.0);
 
     return InkWell(
@@ -95,7 +93,7 @@ class _MyAppState extends State<MyApp> {
       child: Card(
         shape: icon == _currentIcon ? _buildBorder(border) : null,
         child: Padding(
-          padding: const EdgeInsets.all(14.0),
+          padding: const EdgeInsets.all(4.0),
           child: _buildPreviewIcon(
             icon,
           ),
@@ -109,21 +107,24 @@ class _MyAppState extends State<MyApp> {
       borderRadius: borderRadius,
       side: BorderSide(
         color: Theme.of(context).primaryColor,
-        width: 2.0,
+        width: 4.0,
       ),
     );
   }
 
-  Widget _buildPreviewIcon(CustomIcons icon, {double size = 100}) {
-    return Image.asset(
-      icon.previewPath,
-      fit: BoxFit.contain,
-      width: size,
-      height: size,
+  Widget _buildPreviewIcon(CustomIcon icon, {double size = 100}) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(8),
+      child: Image.asset(
+        icon.previewPath,
+        fit: BoxFit.contain,
+        width: size,
+        height: size,
+      ),
     );
   }
 
-  Future<void> _changeIcon(CustomIcons icon) async {
+  Future<void> _changeIcon(CustomIcon icon) async {
     final currentIcon = icon.currentIcon;
     try {
       await _flutterAppIconChangerPlugin.changeIcon(currentIcon);
@@ -133,61 +134,5 @@ class _MyAppState extends State<MyApp> {
     } on PlatformException catch (e) {
       debugPrint("Failed to change icon: '${e.message}'.");
     }
-  }
-}
-
-class CustomIconsSet extends AppIconsSet {
-  CustomIconsSet() : super(iconsSet: CustomIcons.values);
-}
-
-enum CustomIcons implements AppIcon {
-  first(
-    'AppIcon1',
-    'MainActivityAlias1',
-    previewPath: 'assets/icons/icon1.png',
-  ),
-  second('AppIcon2', 'MainActivityAlias2',
-      previewPath: 'assets/icons/icon2.png'),
-  byDefault(
-    'AppIcon',
-    'MainActivity',
-    previewPath: 'assets/icons/default_icon.png',
-    isDefaultIcon: true,
-  );
-
-  @override
-  final String iOSIcon;
-  @override
-  final String androidIcon;
-  @override
-  final bool isDefaultIcon;
-
-  final String previewPath;
-
-  const CustomIcons(
-    this.iOSIcon,
-    this.androidIcon, {
-    required this.previewPath,
-    this.isDefaultIcon = false,
-  });
-
-  @override
-  Map<String, dynamic> get data {
-    return {
-      'icon': currentIcon,
-      'isDefaultIcon': isDefaultIcon,
-    };
-  }
-
-  @override
-  String get currentIcon => Platform.isIOS ? iOSIcon : androidIcon;
-
-  factory CustomIcons.fromString(String? icon) {
-    if (icon == null) return CustomIcons.byDefault;
-
-    return CustomIcons.values.firstWhere(
-      (e) => e.iOSIcon == icon || e.androidIcon == icon,
-      orElse: () => CustomIcons.byDefault,
-    );
   }
 }
