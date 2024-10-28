@@ -25,18 +25,27 @@ abstract class FlutterAppIconChangerPlatform extends PlatformInterface {
     _instance = instance;
   }
 
+  /// Changes the app icon to the specified [iconName].
+  ///
+  /// If [iconName] is `null`, the default icon is used.
+  /// Returns `true` if the icon was successfully changed.
   Future<bool?> changeIcon(String? icon) {
     throw UnimplementedError('changeIcon() has not been implemented.');
   }
 
+  /// Retrieves the name of the current app icon.
+  ///
+  /// May return `true` if a default icon is set.
   Future<String?> getCurrentIcon() {
     throw UnimplementedError('getCurrentIcon() has not been implemented.');
   }
 
+  /// Checks if changing the app icon is supported on the current platform.
   Future<bool> isSupported() async {
     throw UnimplementedError('isSupported() has not been implemented.');
   }
 
+  /// Sets the available icons for the plugin.
   Future<void> setAvailableIcons(AppIconsSet iconsSet) async {
     throw UnimplementedError('setAvailableIcons() has not been implemented.');
   }
